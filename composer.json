@@ -18,5 +18,8 @@
         "psr-4": {
             "Syna\\Test\\": "tests"
         }
+    },
+    "scripts": {
+        "code-style": "phpcs --standard=PSR2 src && phpcs --standard=PSR2 --ignore=example tests"
     }
 }
