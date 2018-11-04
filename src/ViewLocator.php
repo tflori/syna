@@ -36,7 +36,7 @@ class ViewLocator
 
     public function add($name, $path): self
     {
-        if (file_exists($path)) {
+        if (!file_exists($path)) {
             throw new \LogicException('File ' . $path . ' does not exist');
         }
 
@@ -53,7 +53,7 @@ class ViewLocator
         foreach (array_reverse($this->paths) as $path) {
             $viewPath = $path . DIRECTORY_SEPARATOR . $name . $this->extension;
             if (file_exists($viewPath)) {
-                $this->map[$name] = $viewPath;
+                $this->map[$name] = realpath($viewPath);
                 return true;
             }
         }
