@@ -117,15 +117,20 @@ class View
             throw new \LogicException('You must start a section before you can end it.');
         }
 
-        $content = trim(ob_get_clean());
-        if ($this->appendSection && isset($this->sections[$this->sectionName])) {
-            $this->sections[$this->sectionName] .= $content;
-        } else {
-            $this->sections[$this->sectionName] = $content;
-        }
+        $this->provide($this->sectionName, ob_get_clean(), $this->appendSection);
 
         $this->sectionName = null;
         $this->appendSection = false;
+    }
+
+    public function provide(string $name, string $content, bool $append = false)
+    {
+        $content = trim($content, "\t\n\r\0\x0b");
+        if ($append && isset($this->sections[$name])) {
+            $this->sections[$name] .= $content;
+        } else {
+            $this->sections[$name] = $content;
+        }
     }
 
     public function section(string $name, string $default = null): string
