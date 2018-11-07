@@ -14,7 +14,11 @@
                 padding: 0 20px;
             }
             #left-col {
-                width: 248px;
+                position: relative;
+                min-height: 400px;
+            }
+            #left-col ul {
+                width: calc(100% - 1.5rem);
                 position: absolute;
                 z-index: 2;
             }
@@ -39,19 +43,21 @@
         </div>
 
         <div class="container">
-            <div class="col l4 hide-on-med-and-down" id="left-col">
-                <ul class="nav">
-                    <li><a href="/home"><i class="material-icons">home</i> Home</a></li>
-                    <li><a href="/blog"><i class="material-icons">rss_feed</i> Blog</a></li>
-                    <li><a href="/guide"><i class="material-icons">toc</i> Guide</a></li>
-                    <li><a href="/docs"><i class="material-icons">library_books</i> Documentation</a></li>
-                    <li><a href="/exchange"><i class="material-icons">question_answer</i> Exchange</a></li>
-                </ul>
-            </div>
-            <div class="col s12 l9 offset-l3" id="right-col">
+            <div class="row">
+                <div class="col l2 hide-on-med-and-down" id="left-col">
+                    <ul class="nav">
+                        <li><a href="/home"><i class="material-icons">home</i> Home</a></li>
+                        <li><a href="/blog"><i class="material-icons">rss_feed</i> Blog</a></li>
+                        <li><a href="/guide"><i class="material-icons">toc</i> Guide</a></li>
+                        <li><a href="/docs"><i class="material-icons">library_books</i> Documentation</a></li>
+                        <li><a href="/exchange"><i class="material-icons">question_answer</i> Exchange</a></li>
+                    </ul>
+                </div>
+                <div class="col s12 l10" id="right-col">
 
-                <?= $v->section('content') ?>
+                    <?= $v->section('content') ?>
 
+                </div>
             </div>
         </div>
     </body>
