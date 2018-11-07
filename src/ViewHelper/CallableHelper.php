@@ -2,7 +2,6 @@
 
 namespace Syna\ViewHelper;
 
-
 /**
  * Class CallableHelper
  *

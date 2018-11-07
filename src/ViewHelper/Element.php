@@ -2,7 +2,6 @@
 
 namespace Syna\ViewHelper;
 
-
 /**
  * Create an element with attributes and content
  *
