@@ -6,7 +6,31 @@
 [![Total Downloads](https://poser.pugx.org/tflori/syna/downloads.svg)](https://packagist.org/packages/tflori/syna) 
 [![License](https://poser.pugx.org/tflori/syna/license.svg)](https://packagist.org/packages/tflori/syna)
 
-PHP library for rendering native php templates with sections, inheritance and helpers.  
+PHP library for rendering native php templates with sections, inheritance and helpers.
+
+This library is inspired by [aura/view](https://packagist.org/packages/aura/view) and 
+[league/plates](https://packagist.org/packages/league/plates). Both have advantages against each other and both are
+lacking some major features.
+
+> Að sýna means to show in Icelandic.
+
+### Helpers
+
+Both libraries are missing a functionality to not register each helper. Syna has the ability to register namespaces
+where your helpers are placed. Adding the namespace `App\ViewHelper` would load `App\ViewHelper\Date` for
+`$view->date()`.
+
+### Layouts
+
+Syna also provides the ability to use layouts as described by the TwoStepView pattern. Other then extending views from
+inside a view (suggested by other libraries like league/plates, illuminate/blade etc.) you should define the layout
+in your controller. The separation of concerns between extending views and wrapping a html snipped into another one
+is logic that should not be decided from views (e. g. loading the content of a modal dialog or loading a full page with
+navigation, header and footer).
+
+### Named Locators
+
+### Extending Views 
 
 ## Installation
 
