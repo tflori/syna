@@ -34,7 +34,7 @@ class ViewLocator
         return $this;
     }
 
-    public function add($name, $path): self
+    public function add(string $name, string $path): self
     {
         if (!file_exists($path)) {
             throw new \LogicException('File ' . $path . ' does not exist');
@@ -44,7 +44,7 @@ class ViewLocator
         return $this;
     }
 
-    public function has($name): bool
+    public function has(string $name): bool
     {
         if (isset($this->map[$name])) {
             return true;
@@ -61,10 +61,17 @@ class ViewLocator
         return false;
     }
 
-    public function getPath($name): string
+    /**
+     * Get the path to view $name
+     *
+     * @param $name
+     * @return string
+     * @throws NotFound
+     */
+    public function getPath(string $name): string
     {
         if (!$this->has($name)) {
-            throw new \Exception('View ' . $name . ' not found');
+            throw new NotFound('View ' . $name . ' not found');
         }
 
         return $this->map[$name];

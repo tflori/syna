@@ -38,16 +38,7 @@ class HelperLocator
 
     public function add(string $name, $helper)
     {
-        if (isset($this->map[$name])) {
-            throw new \LogicException('Helper ' . $name . ' already exists');
-        }
-
-        if (is_callable($helper) && !$helper instanceof ViewHelperInterface) {
-            $this->map[$name] = $helper;
-            return $this;
-        }
-
-        if ($helper instanceof ViewHelperInterface) {
+        if (is_callable($helper)) {
             $this->map[$name] = $helper;
             return $this;
         }
@@ -81,10 +72,19 @@ class HelperLocator
         return false;
     }
 
+    /**
+     * Get a helper for $name
+     *
+     * Creates CallableHelper for callback helpers and instantiates classes.
+     *
+     * @param string $name
+     * @return ViewHelperInterface
+     * @throws NotFound
+     */
     public function getHelper(string $name): ViewHelperInterface
     {
         if (!$this->has($name)) {
-            throw new \LogicException('View helper ' . $name . ' not found');
+            throw new NotFound('View helper ' . $name . ' not found');
         }
 
         if (is_callable($this->map[$name]) && !$this->map[$name] instanceof ViewHelperInterface) {

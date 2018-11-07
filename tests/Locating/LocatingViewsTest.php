@@ -2,6 +2,7 @@
 
 namespace Syna\Test\Locating;
 
+use Syna\NotFound;
 use Syna\Test\TestCase;
 use Syna\ViewLocator;
 
@@ -45,7 +46,7 @@ class LocatingViewsTest extends TestCase
     {
         $locator = new ViewLocator($this->templatePath);
 
-        self::expectException(\Exception::class);
+        self::expectException(NotFound::class);
         self::expectExceptionMessage('View test not found');
 
         $locator->getPath('test');

@@ -2,10 +2,15 @@
 
 namespace Syna\ViewHelper;
 
-use Syna\View;
-use Syna\ViewHelperInterface;
 
-class CallableHelper implements ViewHelperInterface
+/**
+ * Class CallableHelper
+ *
+ * @package Syna\ViewHelper
+ * @author Thomas Flori <thflori@gmail.com>
+ * @codeCoverageIgnore Just a wrapper
+ */
+class CallableHelper extends AbstractViewHelper
 {
     /** @var callable */
     protected $callable;
@@ -18,9 +23,5 @@ class CallableHelper implements ViewHelperInterface
     public function __invoke(...$args)
     {
         return call_user_func($this->callable, ...$args);
-    }
-
-    public function setView(View $view)
-    {
     }
 }
