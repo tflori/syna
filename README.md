@@ -45,7 +45,7 @@ $ composer require tflori/syna
 ```php
 <?php
 
-use Syna\Engine;
+use Syna\Factory;
 use Syna\HelperLocator;
 use Syna\ViewLocator;
 
@@ -53,7 +53,7 @@ $viewLocator = new ViewLocator(__DIR__ . '/resources/views');
 $layoutLocator = new ViewLocator(__DIR__ . '/resources/layouts');
 $helperLocator = new HelperLocator();
 
-$templates = new Engine($viewLocator, $helperLocator, $layoutLocator);
+$templates = new Factory($viewLocator, $helperLocator, $layoutLocator);
 
 echo $templates->render('pages/home', [], 'fullPage');
 ```
@@ -110,4 +110,4 @@ echo $templates->render('pages/home', [], 'fullPage');
 <?= $v->section('content') ?>
 ```
 
-Please also have a look at the [example](example.php) 
+Please also have a look at the [example](example.php) for a more concrete example.

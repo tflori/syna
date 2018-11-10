@@ -4,7 +4,7 @@ namespace Syna;
 
 class View
 {
-    /** @var Engine */
+    /** @var Factory */
     protected $engine;
 
     /** @var array  */
@@ -25,7 +25,7 @@ class View
     /** @var bool */
     protected $appendSection = false;
 
-    public function __construct(Engine $engine, string $path, array $data = [])
+    public function __construct(Factory $engine, string $path, array $data = [])
     {
         $this->engine = $engine;
         $this->path = $path;

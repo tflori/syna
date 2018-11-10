@@ -1,6 +1,6 @@
 <?php
 
-use Syna\Engine;
+use Syna\Factory;
 use Syna\HelperLocator;
 use Syna\ViewLocator;
 
@@ -14,7 +14,7 @@ $viewLocator = new ViewLocator(__DIR__ . '/resources/views');
 $layoutLocator = new ViewLocator(__DIR__ . '/resources/layouts');
 $helperLocator = new HelperLocator();
 
-$templates = new Engine($viewLocator, $helperLocator, $layoutLocator);
+$templates = new Factory($viewLocator, $helperLocator, $layoutLocator);
 
 $templates->addSharedData([
     'menu' => [

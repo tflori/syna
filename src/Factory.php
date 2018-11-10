@@ -2,7 +2,7 @@
 
 namespace Syna;
 
-class Engine
+class Factory
 {
     protected $sharedData = [];
 
@@ -16,15 +16,14 @@ class Engine
     protected $namedLocators = [];
 
     /**
-     * Engine constructor.
      * @param ViewLocator   $viewLocator
      * @param HelperLocator $helperLocator
      * @param ViewLocator   $layoutLocator
      */
     public function __construct(
         ViewLocator $viewLocator,
-        HelperLocator $helperLocator = null,
-        ViewLocator $layoutLocator = null
+        ?HelperLocator $helperLocator = null,
+        ?ViewLocator $layoutLocator = null
     ) {
         $this->viewLocator = $viewLocator;
         $this->helperLocator = $helperLocator ?? new HelperLocator();
@@ -32,23 +31,76 @@ class Engine
             $this->namedLocators['layout'] = $layoutLocator;
     }
 
-    public function addLocator(string $name, HelperLocator $locator): self
+    /**
+     * Add a named ViewLocator $locator to this factory
+     *
+     * @param string $name
+     * @param ViewLocator $locator
+     * @return Factory
+     */
+    public function addLocator(string $name, ViewLocator $locator): self
     {
         $this->namedLocators[$name] = $locator;
         return $this;
     }
 
+    /**
+     * Get a named ViewLocator or the default ViewLocator
+     *
+     * @param string $name
+     * @return ViewLocator
+     */
+    public function getLocator(?string $name = null): ?ViewLocator
+    {
+        if (!$name) {
+            return $this->viewLocator;
+        }
+        return $this->namedLocators[$name] ?? null;
+    }
+
+    /**
+     * Get the HelperLocator
+     *
+     * @return HelperLocator
+     */
+    public function getHelperLocator(): HelperLocator
+    {
+        return $this->helperLocator;
+    }
+
+    /**
+     * Add shared data
+     *
+     * @param array $data
+     * @return Factory
+     */
     public function addSharedData(array $data): self
     {
         $this->sharedData = array_merge($this->sharedData, $data);
         return $this;
     }
 
-    public function getSharedData()
+    /**
+     * Get all shared Data
+     *
+     * @return array
+     */
+    public function getSharedData(): array
     {
         return $this->sharedData;
     }
 
+    /**
+     * Create a view for $name with $data
+     *
+     * $name can be prefixed with a locator name followed by two colons (e. g. 'mail::activation') uses the locator
+     * named mail and searches for 'activation'.
+     *
+     * @param string $name
+     * @param array $data
+     * @return View
+     * @throws \Exception|\LogicException
+     */
     public function view(string $name, array $data = []): View
     {
         $viewLocator = $this->viewLocator;
@@ -69,6 +121,17 @@ class Engine
         return new View($this, $viewLocator->getPath($name), $data);
     }
 
+    /**
+     * Creates a view for $name with $data and renders it
+     *
+     * If $layout is given the view will be wrapped in $layout using the layout ViewLocator. You have to define a layout
+     * ViewLocator first.
+     *
+     * @param string $name
+     * @param array $data
+     * @param string|null $layout
+     * @return string
+     */
     public function render(string $name, array $data = [], string $layout = null): string
     {
         $view = $this->view($name, $data);
@@ -76,13 +139,24 @@ class Engine
 
         if ($layout && isset($this->namedLocators['layout'])) {
             $layout = $this->view('layout::' . $layout);
-            $layout->setSections(array_merge($view->getSections(), ['content' => $content]));
+            $layout->setSections(...array_merge($view->getSections(), ['content' => $content]));
             $content = $layout->render();
         }
 
         return $content;
     }
 
+    /**
+     * Execute $function with $arguments
+     *
+     * If the HelperLocator has $function this helper will be preferred but a 'strtoupper' is a valid callable and will
+     * be executed if no helper is defined for this name.
+     *
+     * @param View $view
+     * @param string|callable $function
+     * @param mixed ...$arguments
+     * @return mixed
+     */
     public function helper(View $view, $function, ...$arguments)
     {
         if ($this->helperLocator->has($function)) {
