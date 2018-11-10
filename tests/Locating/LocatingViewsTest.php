@@ -6,12 +6,19 @@ use Syna\NotFound;
 use Syna\Test\TestCase;
 use Syna\ViewLocator;
 
+/**
+ * Class LocatingViewsTest
+ *
+ * @package Syna\Test\Locating
+ * @author Thomas Flori <thflori@gmail.com>
+ * @covers \Syna\ViewLocator
+ */
 class LocatingViewsTest extends TestCase
 {
     /** @test */
     public function locatesPhtmlTemplatesByDefault()
     {
-        $this->createTemplate('greeting.phtml', 'Hello <?= $name ?>!');
+        $this->createTemplate('greeting.php', 'Hello <?= $name ?>!');
         $locator = new ViewLocator($this->templatePath);
 
         $result = $locator->has('greeting');
@@ -22,7 +29,7 @@ class LocatingViewsTest extends TestCase
     /** @test */
     public function returnsFullPathToTemplate()
     {
-        $fullPath = $this->createTemplate('greeting.phtml', 'Hello <?= $name ?>!');
+        $fullPath = $this->createTemplate('greeting.php', 'Hello <?= $name ?>!');
         $locator = new ViewLocator($this->templatePath);
 
         $path = $locator->getPath('greeting');
@@ -33,7 +40,7 @@ class LocatingViewsTest extends TestCase
     /** @test */
     public function isNotConfusedByAdditionalSlashes()
     {
-        $fullPath = $this->createTemplate('form/text.phtml', '<input type="text" name="<?= $e($name) ?>" />');
+        $fullPath = $this->createTemplate('form/text.php', '<input type="text" name="<?= $e($name) ?>" />');
         $locator = new ViewLocator($this->templatePath);
 
         $path = $locator->getPath('/form//text');
@@ -55,7 +62,7 @@ class LocatingViewsTest extends TestCase
     /** @test */
     public function viewsCanManuallyBeAddedWithDifferentNames()
     {
-        $fullPath = $this->createTemplate('greeting.phtml', 'Hello <?= $name ?>!');
+        $fullPath = $this->createTemplate('greeting.php', 'Hello <?= $name ?>!');
         $locator = new ViewLocator('/etc');
 
         $locator->add('greet', $fullPath);
@@ -69,16 +76,16 @@ class LocatingViewsTest extends TestCase
         $locator = new ViewLocator('/');
 
         self::expectException(\LogicException::class);
-        self::expectExceptionMessage('File /var/template.phtml does not exist');
+        self::expectExceptionMessage('File /var/template.php does not exist');
 
-        $locator->add('template', '/var/template.phtml');
+        $locator->add('template', '/var/template.php');
     }
 
     /** @test */
     public function searchesTemplatesInReversedOrder()
     {
-        $defaultPath = $this->createTemplate('default/greeting.phtml', 'Hello <?= $name ?>!');
-        $themedPath = $this->createTemplate('theme/greeting.phtml', '<p>Hello <?= $name ?>!</p>');
+        $defaultPath = $this->createTemplate('default/greeting.php', 'Hello <?= $name ?>!');
+        $themedPath = $this->createTemplate('theme/greeting.php', '<p>Hello <?= $name ?>!</p>');
 
         $locator = new ViewLocator($this->templatePath . '/default');
         $locator->addPath($this->templatePath . '/theme');
@@ -91,9 +98,9 @@ class LocatingViewsTest extends TestCase
     /** @test */
     public function addFallbackPathWithPrepend()
     {
-        $defaultPath = $this->createTemplate('default/greeting.phtml', 'Hello <?= $name ?>!');
-        $this->createTemplate('fallback/greeting.phtml', 'Hello <?= $name ?>!');
-        $fallbackPath = $this->createTemplate('fallback/welcome.phtml', 'Welcome <?= $name ?>!');
+        $defaultPath = $this->createTemplate('default/greeting.php', 'Hello <?= $name ?>!');
+        $this->createTemplate('fallback/greeting.php', 'Hello <?= $name ?>!');
+        $fallbackPath = $this->createTemplate('fallback/welcome.php', 'Welcome <?= $name ?>!');
 
         $locator = new ViewLocator($this->templatePath . '/default');
         $locator->prependPath($this->templatePath . '/fallback');

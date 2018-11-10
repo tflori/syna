@@ -11,6 +11,13 @@ use Syna\ViewHelper\CallableHelper;
 use Syna\ViewHelper\Element;
 use Syna\ViewHelperInterface;
 
+/**
+ * Class LocatingHelpersTest
+ *
+ * @package Syna\Test\Locating
+ * @author Thomas Flori <thflori@gmail.com>
+ * @covers \Syna\HelperLocator
+ */
 class LocatingHelpersTest extends TestCase
 {
     /** @test */

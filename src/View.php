@@ -104,6 +104,9 @@ class View
         }
         unset($data);
 
+        if (isset($this->data['this'])) {
+            unset($this->data['this']); // avoid fatal error
+        }
         $v = $this;             // provide the view and it's method under $v
         $e = [$this, 'escape']; // provide the escape method under $e
         extract($this->data, EXTR_SKIP); // preserves $v, $e and $this

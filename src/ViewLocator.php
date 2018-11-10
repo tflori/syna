@@ -14,9 +14,9 @@ class ViewLocator
     protected $map = [];
 
     /** @var string */
-    protected $extension = '.phtml';
+    protected $extension = '.php';
 
-    public function __construct(string $path, string $extension = '.phtml')
+    public function __construct(string $path, string $extension = '.php')
     {
         $this->paths[] = $path;
         $this->extension = $extension;
