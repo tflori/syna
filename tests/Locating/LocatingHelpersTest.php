@@ -6,7 +6,6 @@ use Syna\HelperLocator;
 use Syna\NotFound;
 use Syna\Test\Examples;
 use Syna\Test\Examples\DateTimeFormat;
-use Syna\Test\Examples\Deeper;
 use Syna\Test\TestCase;
 use Syna\ViewHelper\CallableHelper;
 use Syna\ViewHelper\Element;
@@ -95,10 +94,33 @@ class LocatingHelpersTest extends TestCase
     {
         $locator = new HelperLocator(Examples::class);
 
-        $locator->addNamespace(Deeper::class);
+        $locator->addNamespace(Examples\Deeper::class);
         $helper = $locator->getHelper('dateTimeFormat');
 
-        self::assertInstanceOf(Deeper\DateTimeFormat::class, $helper);
+        self::assertInstanceOf(Examples\Deeper\DateTimeFormat::class, $helper);
+    }
+
+    /** @test */
+    public function reusesTheAlreadyResolvedHandler()
+    {
+        $locator = new HelperLocator(Examples::class);
+        self::assertInstanceOf(DateTimeFormat::class, $locator->getHelper('dateTimeFormat'));
+
+        $locator->addNamespace(Examples\Deeper::class);
+
+        self::assertInstanceOf(DateTimeFormat::class, $locator->getHelper('dateTimeFormat'));
+    }
+
+    /** @test */
+    public function findsTheNewHelperAfterClearingFound()
+    {
+        $locator = new HelperLocator(Examples::class);
+        self::assertInstanceOf(DateTimeFormat::class, $locator->getHelper('dateTimeFormat'));
+        $locator->addNamespace(Examples\Deeper::class);
+
+        $locator->clearFound();
+
+        self::assertInstanceOf(Examples\Deeper\DateTimeFormat::class, $locator->getHelper('dateTimeFormat'));
     }
 
     /** @test */
@@ -108,7 +130,7 @@ class LocatingHelpersTest extends TestCase
 
         $helper = $locator->getHelper('deeper_dateTimeFormat');
 
-        self::assertInstanceOf(Deeper\DateTimeFormat::class, $helper);
+        self::assertInstanceOf(Examples\Deeper\DateTimeFormat::class, $helper);
     }
 
     /** @test */

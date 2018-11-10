@@ -10,11 +10,22 @@ class HelperLocator
     protected $map = [];
 
     /** @var array */
+    protected $found = [];
+
+    /** @var array */
     protected $namespaces = [ViewHelper::class];
 
     /** @var callable */
     protected $resolver;
 
+    /**
+     * HelperLocator constructor.
+     *
+     * If a resolver is given this resolver will be called to generate instances of the registered classes.
+     *
+     * @param string $namespace
+     * @param callable $resolver
+     */
     public function __construct(string $namespace = null, callable $resolver = null)
     {
         !$namespace ||
@@ -24,18 +35,55 @@ class HelperLocator
         };
     }
 
+    /**
+     * Add another $namespace to search for Helpers
+     *
+     * This Locator uses the last in first out principle. A later defined namespace will be searched first.
+     *
+     * An already resolved helper will not be overwritten with a later defined namespace unless you clear found helpers.
+     *
+     * @param string $namespace
+     * @return $this
+     */
     public function addNamespace(string $namespace): self
     {
         $this->namespaces[] = $namespace;
         return $this;
     }
 
+    /**
+     * Prepend a $namespace to search for Helpers
+     *
+     * This Locator uses the last in first out principle. A later prepended namespace will be searched last.
+     *
+     * @param string $namespace
+     * @return $this
+     */
     public function prependNamespace(string $namespace): self
     {
         array_unshift($this->namespaces, $namespace);
         return $this;
     }
 
+    /**
+     * Clear all helpers found in the registered namespaces
+     *
+     * @return HelperLocator
+     */
+    public function clearFound(): self
+    {
+        $this->found = [];
+        return $this;
+    }
+
+    /**
+     * Register $helper for $name
+     *
+     * We recommend to use a valid method name as $name to use $v->{$name}() syntax.
+     * @param string $name
+     * @param $helper
+     * @return $this
+     */
     public function add(string $name, $helper)
     {
         if (is_callable($helper)) {
@@ -53,9 +101,15 @@ class HelperLocator
         );
     }
 
+    /**
+     * Check if $name is available
+     *
+     * @param string $name
+     * @return bool
+     */
     public function has(string $name): bool
     {
-        if (isset($this->map[$name])) {
+        if (isset($this->map[$name]) || isset($this->found[$name])) {
             return true;
         }
 
@@ -64,7 +118,7 @@ class HelperLocator
         foreach (array_reverse($this->namespaces) as $namespace) {
             $class = $namespace . '\\' . $baseClassName;
             if (class_exists($class)) {
-                $this->map[$name] = $class;
+                $this->found[$name] = $class;
                 return true;
             }
         }
@@ -87,12 +141,16 @@ class HelperLocator
             throw new NotFound('View helper ' . $name . ' not found');
         }
 
-        if (is_callable($this->map[$name]) && !$this->map[$name] instanceof ViewHelperInterface) {
-            $this->map[$name] = new CallableHelper($this->map[$name]);
-        } elseif (is_string($this->map[$name])) {
-            $this->map[$name] = call_user_func($this->resolver, $this->map[$name]);
+        $found = !isset($this->map[$name]);
+        $helper = $this->map[$name] ?? $this->found[$name];
+        if (is_callable($helper) && !$helper instanceof ViewHelperInterface) {
+            $helper = new CallableHelper($this->map[$name]);
+            $found ? $this->found[$name] = $helper : $this->map[$name] = $helper;
+        } elseif (is_string($helper)) {
+            $helper = call_user_func($this->resolver, $helper);
+            $found ? $this->found[$name] = $helper : $this->map[$name] = $helper;
         }
 
-        return $this->map[$name];
+        return $helper;
     }
 }
