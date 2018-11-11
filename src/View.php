@@ -5,7 +5,7 @@ namespace Syna;
 class View
 {
     /** @var Factory */
-    protected $engine;
+    protected $factory;
 
     /** @var array  */
     protected $data = [];
@@ -25,12 +25,12 @@ class View
     /** @var bool */
     protected $appendSection = false;
 
-    public function __construct(Factory $engine, string $path, array $data = [])
+    public function __construct(Factory $factory, string $path, array $data = [])
     {
-        $this->engine = $engine;
+        $this->factory = $factory;
         $this->path = $path;
 
-        $this->data = array_merge($engine->getSharedData(), $data);
+        $this->data = array_merge($factory->getSharedData(), $data);
     }
 
     /**
@@ -52,7 +52,7 @@ class View
      */
     public function __call($name, $arguments)
     {
-        return $this->engine->helper($this, $name, ...$arguments);
+        return $this->factory->helper($this, $name, ...$arguments);
     }
 
     /**
@@ -75,7 +75,7 @@ class View
      * @param string[] $sections
      * @return View
      */
-    public function setSections(string ...$sections): self
+    public function setSections($sections): self
     {
         $this->sections = $sections;
         return $this;
@@ -118,7 +118,7 @@ class View
             $content = trim(ob_get_clean());
 
             if ($this->parentTemplate) {
-                $this->parentTemplate->setSections(...array_merge($this->sections, ['content' => $content]));
+                $this->parentTemplate->setSections(array_merge($this->sections, ['content' => $content]));
                 $content = $this->parentTemplate->render();
             }
 
@@ -140,7 +140,7 @@ class View
      */
     public function extend(string $name, array $data = null)
     {
-        $this->parentTemplate = $this->engine->view($name, $data ?? $this->data);
+        $this->parentTemplate = $this->factory->view($name, $data ?? $this->data);
     }
 
     /**
@@ -229,7 +229,7 @@ class View
      */
     public function fetch(string $name, array $data = array())
     {
-        return $this->engine->render($name, $data);
+        return $this->factory->render($name, $data);
     }
 
     /**
@@ -242,7 +242,7 @@ class View
     public function batch($var, string $functions)
     {
         foreach (explode('|', $functions) as $function) {
-            $var = $this->engine->helper($this, $function, $var);
+            $var = $this->factory->helper($this, $function, $var);
         }
 
         return $var;
@@ -251,11 +251,15 @@ class View
     /**
      * Escape string
      *
-     * @param  string      $string
+     * Uses batch processing for $functions before escaping.
+     *
+     * If $string is no string the $functions have to convert it to string
+     *
+     * @param  string|mixed $string
      * @param  string $functions
      * @return string
      */
-    public function escape(string $string, string $functions = null)
+    public function escape($string, string $functions = null)
     {
         static $flags;
         if (!isset($flags)) {
@@ -265,6 +269,11 @@ class View
         if ($functions) {
             $string = $this->batch($string, $functions);
         }
+
+        if (!is_string($string)) {
+            throw new \LogicException('Only strings can be used for escaping');
+        }
+
         return htmlspecialchars($string, $flags, 'UTF-8');
     }
 }

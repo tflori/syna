@@ -17,6 +17,9 @@ class CallableHelper extends AbstractViewHelper
     public function __construct(callable $callable)
     {
         $this->callable = $callable;
+        if ($callable instanceof \Closure) {
+            $this->callable = \Closure::bind($callable, $this, self::class);
+        }
     }
 
     public function __invoke(...$args)

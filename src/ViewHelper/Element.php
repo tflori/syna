@@ -16,33 +16,25 @@ class Element extends AbstractViewHelper
      * @param bool $escape Escape the text or insert html (XSS?)
      * @return string
      */
-    public function __invoke($name = '', $attributes = [], $content = null, $escape = true)
+    public function __invoke(string $name = '', array $attributes = [], string $content = null, bool $escape = true)
     {
-        $doc = new \DOMDocument('1.0', 'utf-8');
-        $el = $doc->importNode($this->buildElement($name, $content, $escape), true);
-
-        foreach ($attributes as $attribute => $value) {
-            $attr = $doc->createAttribute($attribute);
-            $attr->value = $value;
-            $el->appendChild($attr);
+        if ($escape && !empty($content)) {
+            $content = $this->escape($content);
         }
 
-        $doc->appendChild($el);
-        return $doc->saveHTML();
-    }
-
-    protected function buildElement($name, $content, $escape)
-    {
-        $doc = new \DOMDocument('1.0', 'utf-8');
-
-        if (!$content) {
-            // without content we can just create an element
-            return $doc->createElement($name);
-        } else {
-            // otherwise we surround it with the element and load it as html
-            $content = sprintf('<%s>%s</%s>', $name, $escape ? htmlspecialchars($content) : $content, $name);
-            $doc->loadHTML($content);
-            return $doc->getElementsByTagName('body')->item(0)->childNodes->item(0);
+        $tagContent = '';
+        if (count($attributes)) {
+            $renderedAttributes = [];
+            foreach ($attributes as $attribute => $value) {
+                $renderedAttributes[] = $attribute . '="' . $this->view->escape($value) . '"';
+            }
+            $tagContent = ' ' . implode(' ', $renderedAttributes);
         }
+
+        if (empty($content)) {
+            return sprintf('<%s%s />', $name, $tagContent);
+        }
+
+        return sprintf('<%s%s>%s</%s>', $name, $tagContent, $content, $name);
     }
 }

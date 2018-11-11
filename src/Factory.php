@@ -139,7 +139,7 @@ class Factory
 
         if ($layout && isset($this->namedLocators['layout'])) {
             $layout = $this->view('layout::' . $layout);
-            $layout->setSections(...array_merge($view->getSections(), ['content' => $content]));
+            $layout->setSections(array_merge($view->getSections(), ['content' => $content]));
             $content = $layout->render();
         }
 
