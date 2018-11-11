@@ -56,6 +56,7 @@
                 <div class="col s12 l10" id="right-col">
 
                     <?= $v->section('content') ?>
+                    <?= $v->varDump($menu) ?>
 
                 </div>
             </div>

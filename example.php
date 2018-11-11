@@ -45,4 +45,8 @@ $templates->addSharedData([
     ],
 ]);
 
-echo $templates->render('index', [], 'fullPage');
+try {
+    echo $templates->render('index', [], 'fullPage');
+} catch (Throwable $exception) {
+    echo $exception;
+}
