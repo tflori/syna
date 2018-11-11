@@ -37,6 +37,7 @@ class View
      * The string representation of a view is it's rendered content
      *
      * @return string
+     * @codeCoverageIgnore Just a wrapper
      */
     public function __toString()
     {
@@ -196,7 +197,7 @@ class View
      */
     public function provide(string $name, string $content, bool $append = false)
     {
-        $content = trim($content, "\t\n\r\0\x0b");
+        $content = trim($content, "\n\r\0\x0b");
         if ($append && isset($this->sections[$name])) {
             $this->sections[$name] .= $content;
         } else {
@@ -205,16 +206,16 @@ class View
     }
 
     /**
-     * Get the content of section $name or $default
+     * Get the content of section $name or $alternative
      *
      * @param string $name
-     * @param string|null $default
+     * @param string|null $alternative
      * @return string
      */
-    public function section(string $name, string $default = null): string
+    public function section(string $name, string $alternative = ''): string
     {
         if (!isset($this->sections[$name])) {
-            return $default;
+            return $alternative;
         }
 
         return $this->sections[$name];
