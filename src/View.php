@@ -13,11 +13,14 @@ class View
     /** @var string  */
     protected $path;
 
-    /** @var array  */
-    protected $sections = [];
+    /** @var View */
+    protected $layout;
 
     /** @var View */
-    protected $parentTemplate;
+    protected $parentView;
+
+    /** @var array  */
+    protected $sections = [];
 
     /** @var string */
     protected $sectionName;
@@ -25,10 +28,11 @@ class View
     /** @var bool */
     protected $appendSection = false;
 
-    public function __construct(Factory $factory, string $path, array $data = [])
+    public function __construct(Factory $factory, string $path, array $data = [], ?View $layout = null)
     {
         $this->factory = $factory;
         $this->path = $path;
+        $this->layout = $layout;
 
         $this->data = array_merge($factory->getSharedData(), $data);
     }
@@ -118,9 +122,10 @@ class View
             include $this->path;
             $content = trim(ob_get_clean());
 
-            if ($this->parentTemplate) {
-                $this->parentTemplate->setSections(array_merge($this->sections, ['content' => $content]));
-                $content = $this->parentTemplate->render();
+            if ($this->parentView || $this->layout) {
+                $content = ($this->parentView ?? $this->layout)
+                    ->setSections(array_merge($this->sections, ['content' => $content]))
+                    ->render();
             }
 
             return $content;
@@ -141,7 +146,7 @@ class View
      */
     public function extend(string $name, array $data = null)
     {
-        $this->parentTemplate = $this->factory->view($name, $data ?? $this->data);
+        $this->parentView = $this->factory->view($name, $data ?? $this->data, $this->layout);
     }
 
     /**

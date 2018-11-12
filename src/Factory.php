@@ -98,10 +98,11 @@ class Factory
      *
      * @param string $name
      * @param array $data
+     * @param string|View $layout
      * @return View
-     * @throws \Exception|\LogicException
+     * @throws \Exception
      */
-    public function view(string $name, array $data = []): View
+    public function view(string $name, array $data = [], $layout = null): View
     {
         $viewLocator = $this->viewLocator;
 
@@ -118,7 +119,11 @@ class Factory
             throw new \Exception('View ' . $name . ' not found');
         }
 
-        return new View($this, $viewLocator->getPath($name), $data);
+        if (is_string($layout)) {
+            $layout = $this->view('layout::' . $layout);
+        }
+
+        return new View($this, $viewLocator->getPath($name), $data, $layout);
     }
 
     /**
@@ -129,20 +134,13 @@ class Factory
      *
      * @param string $name
      * @param array $data
-     * @param string|null $layout
+     * @param string $layout
      * @return string
      */
     public function render(string $name, array $data = [], string $layout = null): string
     {
-        $view = $this->view($name, $data);
+        $view = $this->view($name, $data, $layout);
         $content = $view->render();
-
-        if ($layout && isset($this->namedLocators['layout'])) {
-            $layout = $this->view('layout::' . $layout);
-            $layout->setSections(array_merge($view->getSections(), ['content' => $content]));
-            $content = $layout->render();
-        }
-
         return $content;
     }
 
