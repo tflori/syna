@@ -276,10 +276,6 @@ class View
             $string = $this->batch($string, $functions);
         }
 
-        if (!is_string($string)) {
-            throw new \LogicException('Only strings can be used for escaping');
-        }
-
         return htmlspecialchars($string, $flags, 'UTF-8');
     }
 }
