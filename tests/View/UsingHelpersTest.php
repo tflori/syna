@@ -8,6 +8,13 @@ use Mockery as m;
 use Syna\View;
 use Syna\ViewLocator;
 
+/**
+ * Class UsingHelpersTest
+ *
+ * @package Syna\Test\View
+ * @author Thomas Flori <thflori@gmail.com>
+ * @covers \Syna\View
+ */
 class UsingHelpersTest extends TestCase
 {
     /** @var m\Mock|Factory */

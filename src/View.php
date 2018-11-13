@@ -60,6 +60,11 @@ class View
         return $this->factory->helper($this, $name, ...$arguments);
     }
 
+    public function __get($name)
+    {
+        return $this->section($name);
+    }
+
     /**
      * Add $data for the view
      *
@@ -217,7 +222,7 @@ class View
      * @param string|null $alternative
      * @return string
      */
-    public function section(string $name, string $alternative = ''): string
+    public function section(string $name, string $alternative = null): ?string
     {
         if (!isset($this->sections[$name])) {
             return $alternative;

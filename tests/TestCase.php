@@ -26,4 +26,11 @@ class TestCase extends MockeryTestCase
         file_put_contents($path, $content);
         return $path;
     }
+
+    protected static function accessProtected($obj, $prop) {
+        $reflection = new \ReflectionClass($obj);
+        $property = $reflection->getProperty($prop);
+        $property->setAccessible(true);
+        return $property->getValue($obj);
+    }
 }

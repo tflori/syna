@@ -7,6 +7,13 @@ use Syna\Test\TestCase;
 use Mockery as m;
 use Syna\ViewLocator;
 
+/**
+ * Class EscapingTest
+ *
+ * @package Syna\Test\View
+ * @author Thomas Flori <thflori@gmail.com>
+ * @covers \Syna\View
+ */
 class EscapingTest extends TestCase
 {
     /** @var m\Mock|Factory */

@@ -127,35 +127,17 @@ class Factory
     }
 
     /**
-     * Creates a view for $name with $data and renders it
-     *
-     * If $layout is given the view will be wrapped in $layout using the layout ViewLocator. You have to define a layout
-     * ViewLocator first.
-     *
-     * @param string $name
-     * @param array $data
-     * @param string $layout
-     * @return string
-     */
-    public function render(string $name, array $data = [], string $layout = null): string
-    {
-        $view = $this->view($name, $data, $layout);
-        $content = $view->render();
-        return $content;
-    }
-
-    /**
      * Execute $function with $arguments
      *
      * If the HelperLocator has $function this helper will be preferred but a 'strtoupper' is a valid callable and will
      * be executed if no helper is defined for this name.
      *
      * @param View $view
-     * @param string|callable $function
+     * @param string $function
      * @param mixed ...$arguments
      * @return mixed
      */
-    public function helper(View $view, $function, ...$arguments)
+    public function helper(View $view, string $function, ...$arguments)
     {
         if ($this->helperLocator->has($function)) {
             $helper = $this->helperLocator->getHelper($function);
@@ -166,6 +148,21 @@ class Factory
             return call_user_func($function, ...$arguments);
         }
 
-        throw new \LogicException('$function has to be callable or a registered view helper');
+        throw new \Exception('$function has to be callable or a registered view helper');
+    }
+
+    /**
+     * Alias for ->view()->render()
+     *
+     * @param string $name
+     * @param array $data
+     * @param string $layout
+     * @return string
+     * @see Factory::view()
+     * @codeCoverageIgnore just an alias
+     */
+    public function render(string $name, array $data = [], string $layout = null): string
+    {
+        return $this->view($name, $data, $layout)->render();
     }
 }
