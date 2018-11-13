@@ -5,6 +5,7 @@ namespace Syna\Test;
 use Syna\Factory;
 use Mockery as m;
 use Syna\HelperLocator;
+use Syna\NotFound;
 use Syna\View;
 use Syna\ViewHelper\CallableHelper;
 use Syna\ViewLocator;
@@ -84,7 +85,7 @@ class FactoryTest extends TestCase
         $viewLocator->shouldReceive('has')->with('viewName')
             ->once()->ordered()->andReturn(false);
 
-        self::expectException(\Exception::class);
+        self::expectException(NotFound::class);
         self::expectExceptionMessage('View viewName not found');
 
         $factory->view('viewName');
@@ -132,7 +133,7 @@ class FactoryTest extends TestCase
         $helperLocator->shouldReceive('has')->with('helperName')
             ->once()->ordered()->andReturn(false);
 
-        self::expectException(\Exception::class);
+        self::expectException(NotFound::class);
         self::expectExceptionMessage('$function has to be callable or a registered view helper');
 
         $factory->helper($view, 'helperName', 'argument1');

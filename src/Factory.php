@@ -116,7 +116,7 @@ class Factory
         }
 
         if (!$viewLocator->has($name)) {
-            throw new \Exception('View ' . $name . ' not found');
+            throw new NotFound('View ' . $name . ' not found');
         }
 
         if (is_string($layout)) {
@@ -148,7 +148,7 @@ class Factory
             return call_user_func($function, ...$arguments);
         }
 
-        throw new \Exception('$function has to be callable or a registered view helper');
+        throw new NotFound('$function has to be callable or a registered view helper');
     }
 
     /**
