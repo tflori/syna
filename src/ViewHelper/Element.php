@@ -26,7 +26,7 @@ class Element extends AbstractViewHelper
         if (count($attributes)) {
             $renderedAttributes = [];
             foreach ($attributes as $attribute => $value) {
-                $renderedAttributes[] = $attribute . '="' . $this->view->escape($value) . '"';
+                $renderedAttributes[] = $attribute . '="' . $this->escape($value) . '"';
             }
             $tagContent = ' ' . implode(' ', $renderedAttributes);
         }

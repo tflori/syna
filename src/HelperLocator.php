@@ -2,7 +2,7 @@
 
 namespace Syna;
 
-use Syna\ViewHelper\CallableHelper;
+use Syna\ViewHelper\CallableViewHelper;
 
 class HelperLocator
 {
@@ -86,12 +86,7 @@ class HelperLocator
      */
     public function add(string $name, $helper)
     {
-        if (is_callable($helper)) {
-            $this->map[$name] = $helper;
-            return $this;
-        }
-
-        if (is_string($helper) && class_exists($helper)) {
+        if (is_callable($helper) || is_string($helper) && class_exists($helper)) {
             $this->map[$name] = $helper;
             return $this;
         }
@@ -129,7 +124,7 @@ class HelperLocator
     /**
      * Get a helper for $name
      *
-     * Creates CallableHelper for callback helpers and instantiates classes.
+     * Creates CallableViewHelper for callback helpers and instantiates classes.
      *
      * @param string $name
      * @return ViewHelperInterface
@@ -144,7 +139,7 @@ class HelperLocator
         $found = !isset($this->map[$name]);
         $helper = $this->map[$name] ?? $this->found[$name];
         if (is_callable($helper) && !$helper instanceof ViewHelperInterface) {
-            $helper = new CallableHelper($this->map[$name]);
+            $helper = new CallableViewHelper($this->map[$name]);
             $found ? $this->found[$name] = $helper : $this->map[$name] = $helper;
         } elseif (is_string($helper)) {
             $helper = call_user_func($this->resolver, $helper);

@@ -3,6 +3,8 @@
 namespace Syna\Test;
 
 use Mockery\Adapter\Phpunit\MockeryTestCase;
+use Syna\Factory;
+use Syna\ViewLocator;
 
 class TestCase extends MockeryTestCase
 {
@@ -15,6 +17,13 @@ class TestCase extends MockeryTestCase
             system('rm -Rf ' . $this->templatePath);
         }
         mkdir($this->templatePath);
+    }
+
+    protected function createView(string $name = 'test', string $content = '')
+    {
+        $this->createTemplate($name . '.php', $content);
+        $factory = new Factory(new ViewLocator($this->templatePath));
+        return $factory->view($name);
     }
 
     protected function createTemplate(string $path, string $content): string

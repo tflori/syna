@@ -7,7 +7,7 @@ use Mockery as m;
 use Syna\HelperLocator;
 use Syna\NotFound;
 use Syna\View;
-use Syna\ViewHelper\CallableHelper;
+use Syna\ViewHelper\CallableViewHelper;
 use Syna\ViewLocator;
 
 /**
@@ -101,7 +101,7 @@ class FactoryTest extends TestCase
         $helperLocator->shouldReceive('has')->with('helperName')
             ->once()->ordered()->andReturn(true);
         $helperLocator->shouldReceive('getHelper')->with('helperName')
-            ->once()->ordered()->andReturn(new CallableHelper('strtoupper'));
+            ->once()->ordered()->andReturn(new CallableViewHelper('strtoupper'));
 
         $result = $factory->helper($view, 'helperName', 'argument1');
 

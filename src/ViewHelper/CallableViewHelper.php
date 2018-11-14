@@ -3,21 +3,20 @@
 namespace Syna\ViewHelper;
 
 /**
- * Class CallableHelper
+ * Class CallableViewHelper
  *
  * @package Syna\ViewHelper
  * @author Thomas Flori <thflori@gmail.com>
- * @codeCoverageIgnore Just a wrapper
  */
-class CallableHelper extends AbstractViewHelper
+class CallableViewHelper extends AbstractViewHelper
 {
     /** @var callable */
     protected $callable;
 
-    public function __construct(callable $callable)
+    public function __construct(callable $callable, bool $bind = true)
     {
         $this->callable = $callable;
-        if ($callable instanceof \Closure) {
+        if ($bind && $callable instanceof \Closure) {
             $this->callable = \Closure::bind($callable, $this, self::class);
         }
     }

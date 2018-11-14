@@ -7,7 +7,7 @@ use Syna\NotFound;
 use Syna\Test\Examples;
 use Syna\Test\Examples\DateTimeFormat;
 use Syna\Test\TestCase;
-use Syna\ViewHelper\CallableHelper;
+use Syna\ViewHelper\CallableViewHelper;
 use Syna\ViewHelper\Element;
 use Syna\ViewHelperInterface;
 
@@ -47,14 +47,14 @@ class LocatingHelpersTest extends TestCase
 
         $locator->add('lower', 'strtolower');
 
-        self::assertInstanceOf(CallableHelper::class, $locator->getHelper('lower'));
+        self::assertInstanceOf(CallableViewHelper::class, $locator->getHelper('lower'));
     }
 
     /** @test */
     public function defineViewHelperInstancesAsHelper()
     {
         $locator = new HelperLocator();
-        $helper = new CallableHelper(function ($format, $dateTime) {
+        $helper = new CallableViewHelper(function ($format, $dateTime) {
             return $dateTime instanceof \DateTime ? $dateTime->format($format) : date($format, strtotime($dateTime));
         });
 
