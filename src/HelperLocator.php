@@ -3,6 +3,7 @@
 namespace Syna;
 
 use Syna\ViewHelper\CallableViewHelper;
+use Syna\ViewHelper\ViewHelperInterface;
 
 class HelperLocator
 {

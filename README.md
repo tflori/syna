@@ -110,4 +110,5 @@ echo $templates->render('pages/home', [], 'fullPage');
 <?= $v->section('content') ?>
 ```
 
-Please also have a look at the [example](example.php) for a more concrete example.
+Please also have a look at the [example](example.php) for a more concrete example and at the [tests](tests) for the
+documented examples.

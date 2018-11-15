@@ -3,7 +3,6 @@
 namespace Syna\ViewHelper;
 
 use Syna\View;
-use Syna\ViewHelperInterface;
 
 /**
  * Class AbstractViewHelper

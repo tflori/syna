@@ -28,7 +28,7 @@ class View
     /** @var bool */
     protected $appendSection = false;
 
-    public function __construct(Factory $factory, string $path, array $data = [], ?View $layout = null)
+    public function __construct(Factory $factory, string $path, array $data = [], View $layout = null)
     {
         $this->factory = $factory;
         $this->path = $path;
@@ -128,8 +128,8 @@ class View
             $content = trim(ob_get_clean());
 
             if ($this->parentView || $this->layout) {
-                $content = ($this->parentView ?? $this->layout)
-                    ->setSections(array_merge($this->sections, ['content' => $content]))
+                $parent = $this->parentView ?? $this->layout;
+                $content = $parent->setSections(array_merge($this->sections, ['content' => $content]))
                     ->render();
             }
 
@@ -222,7 +222,7 @@ class View
      * @param string|null $alternative
      * @return string
      */
-    public function section(string $name, string $alternative = null): ?string
+    public function section(string $name, string $alternative = null): string
     {
         if (!isset($this->sections[$name])) {
             return $alternative;

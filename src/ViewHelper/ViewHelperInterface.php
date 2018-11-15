@@ -1,6 +1,8 @@
 <?php
 
-namespace Syna;
+namespace Syna\ViewHelper;
+
+use Syna\View;
 
 interface ViewHelperInterface
 {

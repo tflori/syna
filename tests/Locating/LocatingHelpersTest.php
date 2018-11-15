@@ -9,7 +9,7 @@ use Syna\Test\Examples\DateTimeFormat;
 use Syna\Test\TestCase;
 use Syna\ViewHelper\CallableViewHelper;
 use Syna\ViewHelper\Element;
-use Syna\ViewHelperInterface;
+use Syna\ViewHelper\ViewHelperInterface;
 
 /**
  * Class LocatingHelpersTest
