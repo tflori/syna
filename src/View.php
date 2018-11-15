@@ -222,7 +222,7 @@ class View
      * @param string|null $alternative
      * @return string
      */
-    public function section(string $name, string $alternative = null): string
+    public function section(string $name, string $alternative = null): ?string
     {
         if (!isset($this->sections[$name])) {
             return $alternative;
