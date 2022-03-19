@@ -1,0 +1,19 @@
+version: "2"
+
+checks:
+    method-complexity:
+        config:
+            threshold: 9
+
+exclude_patterns:
+    - ".github/"
+    - "tests/"
+    - "example.php"
+    - "vendor/"
+    - "resources/"
+
+plugins:
+    phpcodesniffer:
+        enabled: true
+        config:
+            standard: "PSR2"

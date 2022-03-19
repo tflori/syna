@@ -1,10 +1,11 @@
 # tflori/syna
 
-[![Build Status](https://travis-ci.org/tflori/syna.svg?branch=master)](https://travis-ci.org/tflori/syna)
-[![Coverage Status](https://coveralls.io/repos/github/tflori/syna/badge.svg?branch=master)](https://coveralls.io/github/tflori/syna?branch=master)
-[![Latest Stable Version](https://poser.pugx.org/tflori/syna/v/stable.svg)](https://packagist.org/packages/tflori/syna) 
-[![Total Downloads](https://poser.pugx.org/tflori/syna/downloads.svg)](https://packagist.org/packages/tflori/syna) 
-[![License](https://poser.pugx.org/tflori/syna/license.svg)](https://packagist.org/packages/tflori/syna)
+[![.github/workflows/push.yml](https://github.com/tflori/syna/actions/workflows/push.yml/badge.svg)](https://github.com/tflori/syna/actions/workflows/push.yml)
+[![Test Coverage](https://api.codeclimate.com/v1/badges/fce3a52c51c0ef57f5e7/test_coverage)](https://codeclimate.com/github/tflori/syna/test_coverage)
+[![Maintainability](https://api.codeclimate.com/v1/badges/fce3a52c51c0ef57f5e7/maintainability)](https://codeclimate.com/github/tflori/syna/maintainability)
+[![Latest Stable Version](http://poser.pugx.org/tflori/syna/v)](https://packagist.org/packages/tflori/syna) 
+[![Total Downloads](http://poser.pugx.org/tflori/syna/downloads)](https://packagist.org/packages/tflori/syna) 
+[![License](http://poser.pugx.org/tflori/syna/license)](https://packagist.org/packages/tflori/syna)
 
 PHP library for rendering native php templates with sections, inheritance and helpers.
 
