@@ -113,10 +113,7 @@ class View
             $this->addData($data);
         }
         unset($data);
-
-        if (isset($this->data['this'])) {
-            unset($this->data['this']); // avoid fatal error
-        }
+        unset($this->data['this']); // avoid fatal error
         $v = $this;             // provide the view and it's method under $v
         $e = [$this, 'escape']; // provide the escape method under $e
         extract($this->data, EXTR_SKIP); // preserves $v, $e and $this
@@ -234,11 +231,11 @@ class View
     /**
      * Fetch template $name with $data
      *
-     * @param $name
+     * @param string $name
      * @param array $data
      * @return string
      */
-    public function fetch(string $name, array $data = array())
+    public function fetch(string $name, array $data = array()): string
     {
         return $this->factory->render($name, $data);
     }

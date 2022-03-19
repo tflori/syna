@@ -1,6 +1,7 @@
 {
     "name": "tflori/syna",
     "description": "Library for rendering native php templates",
+    "license": "MIT",
     "require": {
         "php": "^7.1 || ^8.0"
     },
