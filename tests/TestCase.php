@@ -10,7 +10,7 @@ class TestCase extends MockeryTestCase
 {
     protected $templatePath;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->templatePath = '/tmp/syna-test';
         if (file_exists($this->templatePath)) {

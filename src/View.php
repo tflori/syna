@@ -266,8 +266,8 @@ class View
      *
      * If $string is no string the $functions have to convert it to string
      *
-     * @param  string|mixed $string
-     * @param  string $functions
+     * @param string|mixed $string
+     * @param string|null  $functions
      * @return string
      */
     public function escape($string, string $functions = null)

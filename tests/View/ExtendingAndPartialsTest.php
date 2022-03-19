@@ -19,7 +19,7 @@ class ExtendingAndPartialsTest extends TestCase
     /** @var m\Mock|Factory */
     protected $factory;
 
-    protected function setUp()
+    protected function setUp():void
     {
         parent::setUp();
         $this->factory = m::mock(Factory::class, [new ViewLocator($this->templatePath)])->makePartial();

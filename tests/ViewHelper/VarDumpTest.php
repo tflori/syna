@@ -15,7 +15,7 @@ class VarDumpTest extends TestCase
 
         $result = $viewHelper($var, false);
 
-        self::assertContains(var_export($var, true), $result);
+        self::assertStringContainsString(var_export($var, true), $result);
     }
 
     /** @test */
@@ -26,8 +26,8 @@ class VarDumpTest extends TestCase
 
         $result = $viewHelper($var, true);
 
-        self::assertContains('<code><span style="color: #000000">', $result);
-        self::assertContains('</span>' . PHP_EOL . '</code>', $result);
+        self::assertStringContainsString('<code><span style="color: #000000">', $result);
+        self::assertStringContainsString('</span>' . PHP_EOL . '</code>', $result);
     }
 
     /** @test */

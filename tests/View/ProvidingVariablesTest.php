@@ -19,7 +19,7 @@ class ProvidingVariablesTest extends TestCase
     /** @var Factory */
     protected $factory;
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
         $this->factory = new Factory(new ViewLocator($this->templatePath));
