@@ -6,21 +6,11 @@ checks:
             threshold: 9
 
 exclude_patterns:
-    - "config/"
-    - "db/"
-    - "dist/"
-    - "docs/"
-    - "features/"
-    - "**/node_modules/"
-    - "script/"
-    - "**/spec/"
-    - "**/test/"
-    - "**/tests/"
-    - "Tests/"
+    - ".github/"
+    - "tests/"
     - "example.php"
-    - "**/vendor/"
-    - "**/*_test.go"
-    - "**/*.d.ts"
+    - "vendor/"
+    - "resources/"
 
 plugins:
     phpcodesniffer:
